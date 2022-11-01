@@ -8,6 +8,7 @@ use MintwareDe\NativeCron\Content\BlankLine;
 use MintwareDe\NativeCron\Content\CommentLine;
 use MintwareDe\NativeCron\Content\CronJobLine;
 use MintwareDe\NativeCron\Content\CrontabLineInterface;
+use MintwareDe\NativeCron\Content\EnvironmentSetting;
 
 class Crontab
 {
@@ -104,7 +105,12 @@ class Crontab
             } elseif (empty($rawLine)) {
                 $line = new BlankLine();
             } else {
-                $line = new CronJobLine(null, $this->isSystemCrontab());
+                $firstChar = substr($rawLine, 0, 1);
+                if ($firstChar == '*' || is_numeric($firstChar)) {
+                    $line = new CronJobLine(null, $this->isSystemCrontab());
+                } else {
+                    $line = new EnvironmentSetting();
+                }
             }
             if ($line instanceof CrontabLineInterface) {
                 $line->parse($rawLine);
