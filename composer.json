@@ -35,6 +35,7 @@
   },
   "scripts": {
     "fix-cs": "php-cs-fixer fix",
-    "analyse": "phpstan analyse"
+    "analyse": "phpstan analyse",
+    "test": "phpunit"
   }
 }
