@@ -30,6 +30,22 @@ class CronjobLineTest extends TestCase
         self::assertInstanceOf(CrontabLineInterface::class, $cronjobLine);
     }
 
+    public function getSetUser(): void
+    {
+        $cronjobLine = new CronJobLine();
+        self::assertNull($cronjobLine->getUser());
+        $cronjobLine->setUser('maxmuster');
+        self::assertEquals('maxmuster', $cronjobLine->getUser());
+    }
+
+    public function getSetIncludeUser(): void
+    {
+        $cronjobLine = new CronJobLine();
+        self::assertFalse($cronjobLine->getIncludeUser());
+        $cronjobLine->setIncludeUser(true);
+        self::assertTrue($cronjobLine->getIncludeUser());
+    }
+
     public function testParseSimple(): void
     {
         $cronjobLine = new CronJobLine();
@@ -86,6 +102,17 @@ class CronjobLineTest extends TestCase
         self::assertTrue($month->isRange());
         self::assertEquals(4, $month->getValueFrom());
         self::assertEquals(8, $month->getValueTo());
+    }
+
+    public function testBuildWithoutUserShouldThrow(): void
+    {
+        $cronjobLine = new CronJobLine('* * * * * root test', true);
+        $cronjobLine->setUser(null);
+
+        self::expectException(\RuntimeException::class);
+        self::expectExceptionMessage('The cron job line requires a user.');
+
+        $cronjobLine->build();
     }
 
     public function testBuildSimple(): void
