@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MintwareDe\NativeCron\Tests;
+namespace MintwareDe\NativeCron\Tests\Content;
 
-use MintwareDe\NativeCron\DateTimeField;
+use MintwareDe\NativeCron\Content\DateTimeField;
 use PHPUnit\Framework\TestCase;
 
 class DateTimeFieldTest extends TestCase

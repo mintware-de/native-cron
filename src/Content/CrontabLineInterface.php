@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MintwareDe\NativeCron;
+namespace MintwareDe\NativeCron\Content;
 
 /** This is a marker interface for crontab lines */
 interface CrontabLineInterface

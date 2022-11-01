@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace MintwareDe\NativeCron;
 
+use MintwareDe\NativeCron\Content\BlankLine;
+use MintwareDe\NativeCron\Content\CommentLine;
+use MintwareDe\NativeCron\Content\CronJobLine;
+use MintwareDe\NativeCron\Content\CrontabLineInterface;
+
 class Crontab
 {
     /** @var CrontabLineInterface[] */
@@ -28,7 +33,7 @@ class Crontab
             } elseif (empty($rawLine)) {
                 $line = new BlankLine();
             } else {
-                $line = new CronjobLine();
+                $line = new CronJobLine();
             }
             if ($line instanceof CrontabLineInterface) {
                 $line->parse($rawLine);

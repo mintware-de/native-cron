@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MintwareDe\NativeCron;
+namespace MintwareDe\NativeCron\Content;
 
-class CronjobLine implements CrontabLineInterface
+class CronJobLine implements CrontabLineInterface
 {
     private string $command = '';
 
@@ -22,6 +22,15 @@ class CronjobLine implements CrontabLineInterface
 
     /** @var DateTimeField[] */
     private array $weekdays = [];
+
+    public function __construct()
+    {
+        $this->minutes = $this->parseDateTimeField('*', 0, 59);
+        $this->hours = $this->parseDateTimeField('*', 0, 23);
+        $this->days = $this->parseDateTimeField('*', 1, 31);
+        $this->months = $this->parseDateTimeField('*', 1, 12);
+        $this->weekdays = $this->parseDateTimeField('*', 0, 6);
+    }
 
     public function parse(string $rawLine): void
     {
@@ -103,10 +112,10 @@ class CronjobLine implements CrontabLineInterface
     /**
      * @return DateTimeField[]
      */
-    private function parseDateTimeField(string $minuteString, int $min, int $max): array
+    private function parseDateTimeField(string $fieldString, int $min, int $max): array
     {
         $fields = [];
-        $entries = explode(',', $minuteString);
+        $entries = explode(',', $fieldString);
         foreach ($entries as $entry) {
             $field = new DateTimeField($min, $max);
             $field->parse($entry);

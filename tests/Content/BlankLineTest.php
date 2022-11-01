@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MintwareDe\NativeCron\Tests;
+namespace MintwareDe\NativeCron\Tests\Content;
 
-use MintwareDe\NativeCron\BlankLine;
-use MintwareDe\NativeCron\CrontabLineInterface;
+use MintwareDe\NativeCron\Content\BlankLine;
+use MintwareDe\NativeCron\Content\CrontabLineInterface;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
