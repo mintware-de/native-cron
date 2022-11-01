@@ -95,7 +95,7 @@ class Crontab
      */
     public function parse(string $content): void
     {
-        $rawLines = explode("\n", $content);
+        $rawLines = array_map('ltrim', explode("\n", $content));
         $lines = [];
         foreach ($rawLines as $rawLine) {
             $line = null;

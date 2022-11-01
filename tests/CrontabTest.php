@@ -58,6 +58,30 @@ TEXT;
         self::assertEquals($content, $crontab->build());
     }
 
+    public function testParseAndBuildWithLeading(): void
+    {
+        $content = <<<TEXT
+ # Edit this file to introduce tasks to be run by cron.
+ 
+ */2 * * * * test argument
+TEXT;
+
+        $crontab = new Crontab(false);
+        $crontab->parse($content);
+        $lines = $crontab->getLines();
+        self::assertCount(3, $lines);
+        self::assertInstanceOf(CommentLine::class, $lines[0]);
+        self::assertInstanceOf(BlankLine::class, $lines[1]);
+        self::assertInstanceOf(CronJobLine::class, $lines[2]);
+
+        $expected = <<<TEXT
+# Edit this file to introduce tasks to be run by cron.
+
+*/2 * * * * test argument
+TEXT;
+        self::assertEquals($expected, $crontab->build());
+    }
+
     public function testParseAndBuildSystemCrontab(): void
     {
         $content = <<<TEXT
