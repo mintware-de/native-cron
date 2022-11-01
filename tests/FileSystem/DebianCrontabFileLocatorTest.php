@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MintwareDe\NativeCron\Tests\FileSystem\Debian;
+namespace MintwareDe\NativeCron\Tests\FileSystem;
 
 use MintwareDe\NativeCron\Filesystem\CrontabFileLocatorInterface;
 use MintwareDe\NativeCron\Filesystem\DebianCrontabFileLocator;
@@ -26,5 +26,17 @@ class DebianCrontabFileLocatorTest extends TestCase
     {
         $expected = '/etc/cron.d/app';
         self::assertEquals($expected, $this->locator->locateDropInCrontab('app'));
+    }
+
+    public function testLocateUserCrontab(): void
+    {
+        $expected = '/var/spool/cron/root';
+        self::assertEquals($expected, $this->locator->locateUserCrontab('root'));
+    }
+
+    public function testLocateSystemCrontab(): void
+    {
+        $expected = '/etc/crontab';
+        self::assertEquals($expected, $this->locator->locateSystemCrontab());
     }
 }

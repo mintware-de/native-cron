@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace MintwareDe\NativeCron\Filesystem;
 
-class DebianCrontabFileLocator implements CrontabFileLocatorInterface
+class DarwinCrontabFileLocator implements CrontabFileLocatorInterface
 {
+
     public function locateDropInCrontab(string $name): string
     {
-        return '/etc/cron.d/'.$name;
+        throw new \RuntimeException('This platform does not support drop-in cron tabs');
     }
 
     public function locateUserCrontab(string $username): string
     {
-        return '/var/spool/cron/'.$username;
+        return '/usr/lib/cron/tabs/'.$username;
     }
 
     public function locateSystemCrontab(): string
