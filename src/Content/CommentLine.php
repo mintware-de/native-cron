@@ -9,7 +9,9 @@ namespace MintwareDe\NativeCron\Content;
  */
 class CommentLine implements CrontabLineInterface
 {
-    private string $comment = '';
+    public function __construct(private string $comment = '')
+    {
+    }
 
     public function build(): string
     {

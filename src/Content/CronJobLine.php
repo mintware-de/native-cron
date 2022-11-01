@@ -23,13 +23,17 @@ class CronJobLine implements CrontabLineInterface
     /** @var DateTimeField[] */
     private array $weekdays = [];
 
-    public function __construct()
+    public function __construct(?string $line = null)
     {
-        $this->minutes = $this->parseDateTimeField('*', 0, 59);
-        $this->hours = $this->parseDateTimeField('*', 0, 23);
-        $this->days = $this->parseDateTimeField('*', 1, 31);
-        $this->months = $this->parseDateTimeField('*', 1, 12);
-        $this->weekdays = $this->parseDateTimeField('*', 0, 6);
+        if (!empty($line)) {
+            $this->parse($line);
+        } else {
+            $this->minutes = $this->parseDateTimeField('*', 0, 59);
+            $this->hours = $this->parseDateTimeField('*', 0, 23);
+            $this->days = $this->parseDateTimeField('*', 1, 31);
+            $this->months = $this->parseDateTimeField('*', 1, 12);
+            $this->weekdays = $this->parseDateTimeField('*', 0, 6);
+        }
     }
 
     public function parse(string $rawLine): void

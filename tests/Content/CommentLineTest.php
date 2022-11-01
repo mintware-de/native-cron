@@ -10,6 +10,12 @@ use PHPUnit\Framework\TestCase;
 
 class CommentLineTest extends TestCase
 {
+    public function testConstructor(): void
+    {
+        $commentLine = new CommentLine('My comment');
+        self::assertEquals('My comment', $commentLine->getComment());
+    }
+
     public function testInheritance(): void
     {
         $commentLine = new CommentLine();

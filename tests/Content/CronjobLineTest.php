@@ -10,11 +10,18 @@ use PHPUnit\Framework\TestCase;
 
 class CronjobLineTest extends TestCase
 {
-    public function testConstructor(): void
+    public function testEmptyConstructor(): void
     {
         $cronjobLine = new CronJobLine();
         $this->checkEmptyValues($cronjobLine);
         self::assertEquals('* * * * * ', $cronjobLine->build());
+    }
+
+    public function testConstructor(): void
+    {
+        $cronjobLine = new CronJobLine('0 0 * * * test');
+        self::assertEquals('test', $cronjobLine->getCommand());
+        self::assertEquals('0 0 * * * test', $cronjobLine->build());
     }
 
     public function testInheritance(): void
