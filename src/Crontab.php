@@ -104,13 +104,10 @@ class Crontab
                 $line = new CommentLine();
             } elseif (empty($rawLine)) {
                 $line = new BlankLine();
-            } else {
-                $firstChar = substr($rawLine, 0, 1);
-                if ($firstChar == '*' || is_numeric($firstChar)) {
-                    $line = new CronJobLine(null, $this->isSystemCrontab());
-                } else {
-                    $line = new EnvironmentSetting();
-                }
+            } elseif (preg_match(CronJobLine::PATTERN_WITHOUT_USER, $rawLine)) {
+                $line = new CronJobLine(null, $this->isSystemCrontab());
+            } elseif (str_contains($rawLine, '=')) {
+                $line = new EnvironmentSetting();
             }
             if ($line instanceof CrontabLineInterface) {
                 $line->parse($rawLine);

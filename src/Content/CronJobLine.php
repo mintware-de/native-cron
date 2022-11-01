@@ -8,6 +8,9 @@ use RuntimeException;
 
 class CronJobLine implements CrontabLineInterface
 {
+    public const PATTERN_WITH_USER = '~^(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\-,\*\/]+)\s*(?P<weekday>[\d\-,\*\/]+)\s*(?P<user>\w+)\s*(?P<command>.+)$~';
+    public const PATTERN_WITHOUT_USER = '~^(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\-,\*\/]+)\s*(?P<weekday>[\d\-,\*\/]+)\s*(?P<command>.+)$~';
+
     private bool $includeUser;
 
     private ?string $user = null;
@@ -113,27 +116,18 @@ class CronJobLine implements CrontabLineInterface
 
     public function parse(string $rawLine): void
     {
-        [
-            $minuteString,
-            $hourString,
-            $dayString,
-            $monthString,
-            $weekdayString,
-            $command,
-        ] = explode(' ', $rawLine, 6);
+        $pattern = $this->includeUser ? self::PATTERN_WITH_USER : self::PATTERN_WITHOUT_USER;
 
-        $this->minutes = $this->parseDateTimeField($minuteString, 0, 59);
-        $this->hours = $this->parseDateTimeField($hourString, 0, 23);
-        $this->days = $this->parseDateTimeField($dayString, 1, 31);
-        $this->months = $this->parseDateTimeField($monthString, 1, 12);
-        $this->weekdays = $this->parseDateTimeField($weekdayString, 0, 6);
+        preg_match($pattern, $rawLine, $matches);
+        $this->minutes = $this->parseDateTimeField($matches['minute'], 0, 59);
+        $this->hours = $this->parseDateTimeField($matches['hour'], 0, 23);
+        $this->days = $this->parseDateTimeField($matches['day'], 1, 31);
+        $this->months = $this->parseDateTimeField($matches['month'], 1, 12);
+        $this->weekdays = $this->parseDateTimeField($matches['weekday'], 0, 6);
+        $this->command = $matches['command'];
 
         if ($this->includeUser) {
-            [$user, $realCommand] = explode(' ', $command, 2);
-            $this->user = $user;
-            $this->command = $realCommand;
-        } else {
-            $this->command = $command;
+            $this->user = $matches['user'];
         }
     }
 
