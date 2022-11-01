@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class DarwinCrontabFileLocatorTest extends TestCase
 {
-
     private DarwinCrontabFileLocator $locator;
 
     protected function setUp(): void

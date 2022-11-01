@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MintwareDe\NativeCron\Tests;
+namespace MintwareDe\NativeCron\Tests\Content;
 
 use MintwareDe\NativeCron\Content\BlankLine;
 use MintwareDe\NativeCron\Content\CommentLine;
 use MintwareDe\NativeCron\Content\CronJobLine;
+use MintwareDe\NativeCron\Content\Crontab;
 use MintwareDe\NativeCron\Content\CrontabLineInterface;
-use MintwareDe\NativeCron\Crontab;
 use PHPUnit\Framework\TestCase;
 
 class CrontabTest extends TestCase

@@ -6,7 +6,6 @@ namespace MintwareDe\NativeCron\Filesystem;
 
 class DarwinCrontabFileLocator implements CrontabFileLocatorInterface
 {
-
     public function locateDropInCrontab(string $name): string
     {
         throw new \RuntimeException('This platform does not support drop-in cron tabs');
