@@ -1,6 +1,6 @@
 # Changelog
 
-# Next version
+# v1.1.0
 Features:
 - Added a DateTimeDefinition which represents the date / time part of cronjob lines. [PR #1](https://github.com/mintware-de/native-cron/pull/1)
 
