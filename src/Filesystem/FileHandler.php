@@ -40,16 +40,16 @@ class FileHandler implements FileHandlerInterface
         }
 
         $content = file_get_contents($filename);
-        if ($content === false) {
-            throw new \RuntimeException('Error while reading the file.');
-        }
+//        if ($content === false) {
+//            throw new \RuntimeException('Error while reading the file.');
+//        }
 
         return $content;
     }
 
     public function write(string $filename, string $contents): void
     {
-        if (!is_writable($filename)) {
+        if ( !is_writable($filename)) {
             throw new \RuntimeException('The file is not writable.');
         }
 

@@ -35,6 +35,7 @@
   },
   "scripts": {
     "fix-cs": "php-cs-fixer fix",
+    "fix-cs:ci": "php-cs-fixer fix --stop-on-violation --dry-run",
     "analyse": "phpstan analyse",
     "test": "phpunit"
   }
