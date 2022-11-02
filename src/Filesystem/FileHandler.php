@@ -49,7 +49,7 @@ class FileHandler implements FileHandlerInterface
 
     public function write(string $filename, string $contents): void
     {
-        if ( !is_writable($filename)) {
+        if (!is_writable($filename)) {
             throw new \RuntimeException('The file is not writable.');
         }
 
