@@ -65,39 +65,40 @@ class CronjobLineTest extends TestCase
 
         self::assertEquals('test arg', $cronjobLine->getCommand());
 
-        self::assertCount(1, $cronjobLine->getMinutes());
-        $minute = $cronjobLine->getMinutes()[0];
+        $dateTimeDefinition = $cronjobLine->getDateTimeDefinition();
+        self::assertCount(1, $dateTimeDefinition->getMinutes());
+        $minute = $dateTimeDefinition->getMinutes()[0];
         self::assertTrue($minute->hasValue());
         self::assertFalse($minute->isRange());
         self::assertEquals(0, $minute->getValueFrom());
         self::assertEquals(1, $minute->getStep());
 
-        self::assertCount(1, $cronjobLine->getHours());
-        $hours = $cronjobLine->getHours()[0];
+        self::assertCount(1, $dateTimeDefinition->getHours());
+        $hours = $dateTimeDefinition->getHours()[0];
         self::assertFalse($hours->hasValue());
         self::assertEquals(12, $hours->getStep());
 
-        self::assertCount(3, $cronjobLine->getDays());
-        $firstDay = $cronjobLine->getDays()[0];
+        self::assertCount(3, $dateTimeDefinition->getDays());
+        $firstDay = $dateTimeDefinition->getDays()[0];
         self::assertTrue($firstDay->hasValue());
         self::assertFalse($firstDay->isRange());
         self::assertEquals(1, $firstDay->getValueFrom());
         self::assertEquals(1, $firstDay->getStep());
 
-        $secondDay = $cronjobLine->getDays()[1];
+        $secondDay = $dateTimeDefinition->getDays()[1];
         self::assertTrue($secondDay->hasValue());
         self::assertTrue($secondDay->isRange());
         self::assertEquals(3, $secondDay->getValueFrom());
         self::assertEquals(5, $secondDay->getValueTo());
         self::assertEquals(1, $secondDay->getStep());
 
-        $thirdDay = $cronjobLine->getDays()[2];
+        $thirdDay = $dateTimeDefinition->getDays()[2];
         self::assertFalse($thirdDay->hasValue());
         self::assertTrue($thirdDay->isRange());
         self::assertEquals(5, $thirdDay->getStep());
 
-        self::assertCount(1, $cronjobLine->getMonths());
-        $month = $cronjobLine->getMonths()[0];
+        self::assertCount(1, $dateTimeDefinition->getMonths());
+        $month = $dateTimeDefinition->getMonths()[0];
         self::assertTrue($month->hasValue());
         self::assertTrue($month->isRange());
         self::assertEquals(4, $month->getValueFrom());
@@ -133,32 +134,33 @@ class CronjobLineTest extends TestCase
 
     private function checkEmptyValues(CronJobLine $cronjobLine): void
     {
-        self::assertCount(1, $cronjobLine->getMinutes());
-        $minute = $cronjobLine->getMinutes()[0];
+        $dateTimeDefinition = $cronjobLine->getDateTimeDefinition();
+        self::assertCount(1, $dateTimeDefinition->getMinutes());
+        $minute = $dateTimeDefinition->getMinutes()[0];
         self::assertFalse($minute->hasValue());
         self::assertEquals(0, $minute->getMin());
         self::assertEquals(59, $minute->getMax());
 
-        self::assertCount(1, $cronjobLine->getHours());
-        $hours = $cronjobLine->getHours()[0];
+        self::assertCount(1, $dateTimeDefinition->getHours());
+        $hours = $dateTimeDefinition->getHours()[0];
         self::assertFalse($hours->hasValue());
         self::assertEquals(0, $hours->getMin());
         self::assertEquals(23, $hours->getMax());
 
-        self::assertCount(1, $cronjobLine->getDays());
-        $days = $cronjobLine->getDays()[0];
+        self::assertCount(1, $dateTimeDefinition->getDays());
+        $days = $dateTimeDefinition->getDays()[0];
         self::assertFalse($days->hasValue());
         self::assertEquals(1, $days->getMin());
         self::assertEquals(31, $days->getMax());
 
-        self::assertCount(1, $cronjobLine->getMonths());
-        $month = $cronjobLine->getMonths()[0];
+        self::assertCount(1, $dateTimeDefinition->getMonths());
+        $month = $dateTimeDefinition->getMonths()[0];
         self::assertFalse($month->hasValue());
         self::assertEquals(1, $month->getMin());
         self::assertEquals(12, $month->getMax());
 
-        self::assertCount(1, $cronjobLine->getWeekdays());
-        $weekdays = $cronjobLine->getWeekdays()[0];
+        self::assertCount(1, $dateTimeDefinition->getWeekdays());
+        $weekdays = $dateTimeDefinition->getWeekdays()[0];
         self::assertFalse($weekdays->hasValue());
         self::assertEquals(0, $weekdays->getMin());
         self::assertEquals(6, $weekdays->getMax());

@@ -55,7 +55,6 @@ class DateTimeDefinitionTest extends TestCase
             ->setWeekdays('1,3,5,0-5/2,6')
         ;
         self::assertEquals('1,2 3,4 5,6 7-8 1,3,5,0-5/2,6', $definition->build());
-
     }
 
     public function testParseFailsInvalidFormat(): void
