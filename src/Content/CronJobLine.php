@@ -8,8 +8,8 @@ use RuntimeException;
 
 class CronJobLine implements CrontabLineInterface
 {
-    public const PATTERN_WITH_USER = '~^(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\-,\*\/]+)\s*(?P<weekday>[\d\-,\*\/]+)\s*(?P<user>\w+)\s*(?P<command>.+)$~';
-    public const PATTERN_WITHOUT_USER = '~^(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\-,\*\/]+)\s*(?P<weekday>[\d\-,\*\/]+)\s*(?P<command>.+)$~';
+    public const PATTERN_WITH_USER = '~^(?P<datetime>'.DateTimeDefinition::PATTERN.')\s*(?P<user>\w+)\s*(?P<command>.+)$~';
+    public const PATTERN_WITHOUT_USER = '~^(?P<datetime>'.DateTimeDefinition::PATTERN.')\s*(?P<command>.+)$~';
 
     private bool $includeUser;
 
@@ -17,33 +17,15 @@ class CronJobLine implements CrontabLineInterface
 
     private string $command = '';
 
-    /** @var DateTimeField[] */
-    private array $minutes = [];
-
-    /** @var DateTimeField[] */
-    private array $hours = [];
-
-    /** @var DateTimeField[] */
-    private array $days = [];
-
-    /** @var DateTimeField[] */
-    private array $months = [];
-
-    /** @var DateTimeField[] */
-    private array $weekdays = [];
+    private DateTimeDefinition $dateTimeDefinition;
 
     public function __construct(?string $line = null, bool $includesUser = false)
     {
+        $this->dateTimeDefinition = new DateTimeDefinition();
         $this->includeUser = $includesUser;
 
         if (!empty($line)) {
             $this->parse($line);
-        } else {
-            $this->minutes = $this->parseDateTimeField('*', 0, 59);
-            $this->hours = $this->parseDateTimeField('*', 0, 23);
-            $this->days = $this->parseDateTimeField('*', 1, 31);
-            $this->months = $this->parseDateTimeField('*', 1, 12);
-            $this->weekdays = $this->parseDateTimeField('*', 0, 6);
         }
     }
 
@@ -54,42 +36,52 @@ class CronJobLine implements CrontabLineInterface
 
     /**
      * @return DateTimeField[]
+     * @deprecated Use getDateTimeDefinition()->getMinutes() instead
      */
     public function getMinutes(): array
     {
-        return $this->minutes;
+        return $this->dateTimeDefinition->getMinutes();
     }
 
     /**
      * @return DateTimeField[]
+     * @deprecated Use getDateTimeDefinition()->getHours() instead
      */
     public function getHours(): array
     {
-        return $this->hours;
+        return $this->dateTimeDefinition->getHours();
     }
 
     /**
      * @return DateTimeField[]
+     * @deprecated Use getDateTimeDefinition()->getDays() instead
      */
     public function getDays(): array
     {
-        return $this->days;
+        return $this->dateTimeDefinition->getDays();
     }
 
     /**
      * @return DateTimeField[]
+     * @deprecated Use getDateTimeDefinition()->getMonths() instead
      */
     public function getMonths(): array
     {
-        return $this->months;
+        return $this->dateTimeDefinition->getMonths();
     }
 
     /**
      * @return DateTimeField[]
+     * @deprecated Use getDateTimeDefinition()->getWeekdays() instead
      */
     public function getWeekdays(): array
     {
-        return $this->weekdays;
+        return $this->dateTimeDefinition->getWeekdays();
+    }
+
+    public function getDateTimeDefinition(): DateTimeDefinition
+    {
+        return $this->dateTimeDefinition;
     }
 
     public function setUser(?string $user): self
@@ -119,11 +111,8 @@ class CronJobLine implements CrontabLineInterface
         $pattern = $this->includeUser ? self::PATTERN_WITH_USER : self::PATTERN_WITHOUT_USER;
 
         preg_match($pattern, $rawLine, $matches);
-        $this->minutes = $this->parseDateTimeField($matches['minute'], 0, 59);
-        $this->hours = $this->parseDateTimeField($matches['hour'], 0, 23);
-        $this->days = $this->parseDateTimeField($matches['day'], 1, 31);
-        $this->months = $this->parseDateTimeField($matches['month'], 1, 12);
-        $this->weekdays = $this->parseDateTimeField($matches['weekday'], 0, 6);
+
+        $this->dateTimeDefinition->parse($matches['datetime']);
         $this->command = $matches['command'];
 
         if ($this->includeUser) {
@@ -136,13 +125,7 @@ class CronJobLine implements CrontabLineInterface
      */
     public function build(): string
     {
-        $parts = [
-            implode(',', array_map(fn (DateTimeField $o) => $o->build(), $this->minutes)),
-            implode(',', array_map(fn (DateTimeField $o) => $o->build(), $this->hours)),
-            implode(',', array_map(fn (DateTimeField $o) => $o->build(), $this->days)),
-            implode(',', array_map(fn (DateTimeField $o) => $o->build(), $this->months)),
-            implode(',', array_map(fn (DateTimeField $o) => $o->build(), $this->weekdays)),
-        ];
+        $parts = [$this->dateTimeDefinition->build()];
 
         if ($this->includeUser) {
             $user = $this->getUser();
@@ -155,21 +138,5 @@ class CronJobLine implements CrontabLineInterface
         $parts[] = $this->command;
 
         return implode(' ', $parts);
-    }
-
-    /**
-     * @return DateTimeField[]
-     */
-    private function parseDateTimeField(string $fieldString, int $min, int $max): array
-    {
-        $fields = [];
-        $entries = explode(',', $fieldString);
-        foreach ($entries as $entry) {
-            $field = new DateTimeField($min, $max);
-            $field->parse($entry);
-            $fields[] = $field;
-        }
-
-        return $fields;
     }
 }
