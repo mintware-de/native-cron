@@ -40,9 +40,9 @@ class FileHandler implements FileHandlerInterface
         }
 
         $content = file_get_contents($filename);
-//        if ($content === false) {
-//            throw new \RuntimeException('Error while reading the file.');
-//        }
+        if ($content === false) {
+            throw new \RuntimeException('Error while reading the file.');
+        }
 
         return $content;
     }
