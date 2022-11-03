@@ -1,5 +1,9 @@
 # Changelog
 
+# v1.1.1
+Fixes:
+- Crontabs must end with an empty line [PR #2](https://github.com/mintware-de/native-cron/pull/2)
+
 # v1.1.0
 Features:
 - Added a DateTimeDefinition which represents the date / time part of cronjob lines. [PR #1](https://github.com/mintware-de/native-cron/pull/1)

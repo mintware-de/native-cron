@@ -45,12 +45,13 @@ class CrontabTest extends TestCase
 # Edit this file to introduce tasks to be run by cron.
 
 */2 * * * * test argument
+
 TEXT;
 
         $crontab = new Crontab(false);
         $crontab->parse($content);
         $lines = $crontab->getLines();
-        self::assertCount(3, $lines);
+        self::assertCount(4, $lines);
         self::assertInstanceOf(CommentLine::class, $lines[0]);
         self::assertInstanceOf(BlankLine::class, $lines[1]);
         self::assertInstanceOf(CronJobLine::class, $lines[2]);
@@ -78,6 +79,7 @@ TEXT;
 # Edit this file to introduce tasks to be run by cron.
 
 */2 * * * * test argument
+
 TEXT;
         self::assertEquals($expected, $crontab->build());
     }
@@ -88,12 +90,13 @@ TEXT;
 # Edit this file to introduce tasks to be run by cron.
 
 */2 * * * * root test argument
+
 TEXT;
 
         $crontab = new Crontab();
         $crontab->parse($content);
         $lines = $crontab->getLines();
-        self::assertCount(3, $lines);
+        self::assertCount(4, $lines);
         self::assertInstanceOf(CommentLine::class, $lines[0]);
         self::assertInstanceOf(BlankLine::class, $lines[1]);
         self::assertInstanceOf(CronJobLine::class, $lines[2]);
@@ -124,6 +127,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 #
+
 TEXT;
 
         $crontab = new Crontab();
@@ -137,6 +141,7 @@ TEXT;
 # Edit this file to introduce tasks to be run by cron.
 
 */2 * * * * test argument
+
 TEXT;
 
         $crontab = new Crontab(false);
@@ -153,6 +158,7 @@ TEXT;
         $content = <<<TEXT
 # Edit this file to introduce tasks to be run by cron.
 */2 * * * * test argument
+
 TEXT;
 
         $crontab = new Crontab(false);
@@ -171,6 +177,7 @@ TEXT;
         $content = <<<TEXT
 # Edit this file to introduce tasks to be run by cron.
 */2 * * * * test argument
+
 TEXT;
 
         $crontab = new Crontab(false);
@@ -187,5 +194,11 @@ TEXT;
             ->removeWhere(fn (CrontabLineInterface $line) => $line instanceof BlankLine);
 
         self::assertEquals($content, $crontab->build());
+    }
+
+    public function testBuildShouldAppendABlankLine(): void
+    {
+        $crontab = new Crontab();
+        self::assertEquals("\n", $crontab->build());
     }
 }

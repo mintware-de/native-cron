@@ -113,6 +113,11 @@ class Crontab
 
     public function build(): string
     {
-        return implode("\n", array_map(fn (CrontabLineInterface $l) => $l->build(), $this->lines));
+        $content = implode("\n", array_map(fn (CrontabLineInterface $l) => $l->build(), $this->lines));
+        if (!str_ends_with($content, "\n")) {
+            $content .= "\n";
+        }
+
+        return $content;
     }
 }
