@@ -1,5 +1,9 @@
 # Changelog
 
+# v1.1.2
+Fixes:
+- Usernames can contain `\W` characters [PR #3](https://github.com/mintware-de/native-cron/pull/3)
+
 # v1.1.1
 Fixes:
 - Crontabs must end with an empty line [PR #2](https://github.com/mintware-de/native-cron/pull/2)

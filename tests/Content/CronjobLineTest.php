@@ -132,6 +132,13 @@ class CronjobLineTest extends TestCase
         self::assertEquals($line, $cronjobLine->build());
     }
 
+    public function testUserWithDashes(): void
+    {
+        $line = '* * * * * www-data command';
+        $cronjobLine = new CronJobLine($line, true);
+        self::assertEquals('www-data', $cronjobLine->getUser());
+    }
+
     private function checkEmptyValues(CronJobLine $cronjobLine): void
     {
         $dateTimeDefinition = $cronjobLine->getDateTimeDefinition();
