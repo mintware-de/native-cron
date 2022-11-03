@@ -2,6 +2,8 @@
 
 This package helps you to manage and modify your native *nix crontabs.
 
+See also [`mintware-de/native-cron-bundle`](https://github.com/mintware-de/native-cron-bundle) if you're looking for a Symfony bundle.
+
 ## Features
 
 - View / add / edit / delete system cron jobs
