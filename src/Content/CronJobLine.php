@@ -8,7 +8,7 @@ use RuntimeException;
 
 class CronJobLine implements CrontabLineInterface
 {
-    public const PATTERN_WITH_USER = '~^(?P<datetime>'.DateTimeDefinition::PATTERN.')\s*(?P<user>\w+)\s*(?P<command>.+)$~';
+    public const PATTERN_WITH_USER = '~^(?P<datetime>'.DateTimeDefinition::PATTERN.')\s*(?P<user>[^\s]+)\s*(?P<command>.+)$~';
     public const PATTERN_WITHOUT_USER = '~^(?P<datetime>'.DateTimeDefinition::PATTERN.')\s*(?P<command>.+)$~';
 
     private bool $includeUser;
