@@ -6,7 +6,7 @@ namespace MintwareDe\NativeCron\Content;
 
 class DateTimeDefinition
 {
-    public const PATTERN = '(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\w\-,\*\/]+)\s*(?P<weekday>[\d\-,\*\/]+)';
+    public const PATTERN = '(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\w\-,\*\/]+)\s*(?P<weekday>[\d\w\-,\*\/]+)';
 
     /** @var array<string, int> */
     public const MONTH_ABBREVIATIONS = [
@@ -22,6 +22,17 @@ class DateTimeDefinition
         'oct' => 10,
         'nov' => 11,
         'dec' => 12,
+    ];
+
+    /** @var array<string, int> */
+    public const WEEKDAY_ABBREVIATIONS = [
+        'sun' => 0,
+        'mon' => 1,
+        'tue' => 2,
+        'wed' => 3,
+        'thu' => 4,
+        'fri' => 5,
+        'sat' => 6,
     ];
 
     /** @var DateTimeField[] */
@@ -74,7 +85,7 @@ class DateTimeDefinition
 
     public function setWeekdays(string $weekdays): self
     {
-        $this->weekdays = $this->parseDateTimeField($weekdays, 0, 6);
+        $this->weekdays = $this->parseDateTimeField($weekdays, 0, 6, self::WEEKDAY_ABBREVIATIONS);
 
         return $this;
     }
