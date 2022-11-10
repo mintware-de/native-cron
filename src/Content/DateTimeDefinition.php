@@ -6,7 +6,23 @@ namespace MintwareDe\NativeCron\Content;
 
 class DateTimeDefinition
 {
-    public const PATTERN = '(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\-,\*\/]+)\s*(?P<weekday>[\d\-,\*\/]+)';
+    public const PATTERN = '(?P<minute>[\d\-,\*\/]+)\s*(?P<hour>[\d\-,\*\/]+)\s*(?P<day>[\d\-,\*\/]+)\s*(?P<month>[\d\w\-,\*\/]+)\s*(?P<weekday>[\d\-,\*\/]+)';
+
+    /** @var array<string, int> */
+    public const MONTH_ABBREVIATIONS = [
+        'jan' => 1,
+        'feb' => 2,
+        'mar' => 3,
+        'apr' => 4,
+        'may' => 5,
+        'jun' => 6,
+        'jul' => 7,
+        'aug' => 8,
+        'sep' => 9,
+        'oct' => 10,
+        'nov' => 11,
+        'dec' => 12,
+    ];
 
     /** @var DateTimeField[] */
     private array $minutes = [];
@@ -51,7 +67,7 @@ class DateTimeDefinition
 
     public function setMonths(string $months): self
     {
-        $this->months = $this->parseDateTimeField($months, 1, 12);
+        $this->months = $this->parseDateTimeField($months, 1, 12, self::MONTH_ABBREVIATIONS);
 
         return $this;
     }
@@ -104,14 +120,16 @@ class DateTimeDefinition
     }
 
     /**
+     * @param array<string, mixed> $abbreviations Values for abbreviations such as jan,feb or mon-fri.
+     *
      * @return DateTimeField[]
      */
-    private function parseDateTimeField(string $fieldString, int $min, int $max): array
+    private function parseDateTimeField(string $fieldString, int $min, int $max, array $abbreviations = []): array
     {
         $fields = [];
         $entries = explode(',', $fieldString);
         foreach ($entries as $entry) {
-            $field = new DateTimeField($min, $max);
+            $field = new DateTimeField($min, $max, $abbreviations);
             $field->parse($entry);
             $fields[] = $field;
         }

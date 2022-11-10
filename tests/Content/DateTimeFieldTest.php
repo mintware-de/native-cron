@@ -168,4 +168,25 @@ class DateTimeFieldTest extends TestCase
         self::assertEquals(12, $monthField->getValueTo());
         self::assertEquals(2, $monthField->getStep());
     }
+
+    public function testParseWithAbbreviationsValues(): void
+    {
+        $monthField = new DateTimeField(1, 12, [
+            'jan' => 1,
+            'feb' => '2',
+            'mar' => '3',
+            'apr' => 4,
+        ]);
+        self::assertFalse($monthField->hasValue());
+
+        $monthField->parse('jan-apr/2');
+        self::assertEquals(1, $monthField->getValueFrom());
+        self::assertEquals(4, $monthField->getValueTo());
+        self::assertEquals(2, $monthField->getStep());
+
+        $monthField->parse('jan');
+        self::assertEquals(1, $monthField->getValueFrom());
+        self::assertEquals(1, $monthField->getValueTo());
+        self::assertEquals(1, $monthField->getStep());
+    }
 }

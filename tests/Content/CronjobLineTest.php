@@ -139,6 +139,13 @@ class CronjobLineTest extends TestCase
         self::assertEquals('www-data', $cronjobLine->getUser());
     }
 
+    public function testMonthAbbreviations(): void
+    {
+        $line = '* * * jan * www-data command';
+        $cronjobLine = new CronJobLine($line, true);
+        self::assertEquals(1, $cronjobLine->getDateTimeDefinition()->getMonths()[0]->getValueFrom());
+    }
+
     private function checkEmptyValues(CronJobLine $cronjobLine): void
     {
         $dateTimeDefinition = $cronjobLine->getDateTimeDefinition();

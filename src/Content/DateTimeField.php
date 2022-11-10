@@ -12,9 +12,15 @@ class DateTimeField
     private int $valueTo;
     private int $step = 1;
 
+    /**
+     * @param int                  $min
+     * @param int                  $max
+     * @param array<string, mixed> $abbreviations Values for abbreviations such as jan,feb or mon-fri.
+     */
     public function __construct(
         private readonly int $min,
         private readonly int $max,
+        private readonly array $abbreviations = [],
     ) {
         $this->valueFrom = $min;
         $this->valueTo = $max;
@@ -160,10 +166,19 @@ class DateTimeField
             $string .= '/1';
         }
         [$value, $step] = explode('/', $string, 2);
+        if (array_key_exists($value, $this->abbreviations)) {
+            $value = strval($this->abbreviations[$value]);
+        }
         if ($value == '*') {
             $this->unsetValue();
         } elseif (str_contains($value, '-')) {
-            [$from, $to] = array_map('intval', explode('-', $value, 2));
+            [$from, $to] = array_map(function ($part) {
+                if (array_key_exists($part, $this->abbreviations)) {
+                    $part = $this->abbreviations[$part];
+                }
+
+                return intval($part);
+            }, explode('-', $value, 2));
             $this->setRangeValue($from, $to);
         } elseif (is_numeric($value)) {
             $this->setValue(intval($value));
