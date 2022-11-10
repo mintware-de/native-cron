@@ -3,6 +3,7 @@
 # Next version
 Features
 - Added support for month and weekday abbreviations [PR #4](https://github.com/mintware-de/native-cron/pull/4)
+- Added support for value 7 as sunday [PR #5](https://github.com/mintware-de/native-cron/pull/5)
 
 # v1.1.2
 Fixes:

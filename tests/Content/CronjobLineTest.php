@@ -153,6 +153,13 @@ class CronjobLineTest extends TestCase
         self::assertEquals(5, $cronjobLine->getDateTimeDefinition()->getWeekdays()[0]->getValueFrom());
     }
 
+    public function testDaySevenShouldBeSunday(): void
+    {
+        $line = '* * * * 7 www-data command';
+        $cronjobLine = new CronJobLine($line, true);
+        self::assertEquals(0, $cronjobLine->getDateTimeDefinition()->getWeekdays()[0]->getValueFrom());
+    }
+
     private function checkEmptyValues(CronJobLine $cronjobLine): void
     {
         $dateTimeDefinition = $cronjobLine->getDateTimeDefinition();
