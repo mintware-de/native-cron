@@ -1,5 +1,9 @@
 # Changelog
 
+# Next version
+Features
+- Added support for month and weekday abbreviations [PR #4](https://github.com/mintware-de/native-cron/pull/4)
+
 # v1.1.2
 Fixes:
 - Usernames can contain `\W` characters [PR #3](https://github.com/mintware-de/native-cron/pull/3)
