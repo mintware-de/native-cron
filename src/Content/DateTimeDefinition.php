@@ -33,6 +33,8 @@ class DateTimeDefinition
         'thu' => 4,
         'fri' => 5,
         'sat' => 6,
+        // Alternative value for sunday
+        '7' => 0,
     ];
 
     /** @var DateTimeField[] */
