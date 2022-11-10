@@ -13,9 +13,9 @@ class DateTimeField
     private int $step = 1;
 
     /**
-     * @param int                  $min
-     * @param int                  $max
-     * @param array<string, mixed> $abbreviations Values for abbreviations such as jan,feb or mon-fri.
+     * @param int                      $min
+     * @param int                      $max
+     * @param array<string|int, mixed> $abbreviations Values for abbreviations such as jan,feb or mon-fri.
      */
     public function __construct(
         private readonly int $min,

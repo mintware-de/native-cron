@@ -24,7 +24,7 @@ class DateTimeDefinition
         'dec' => 12,
     ];
 
-    /** @var array<string, int> */
+    /** @var array<string|int, int> */
     public const WEEKDAY_ABBREVIATIONS = [
         'sun' => 0,
         'mon' => 1,
@@ -131,7 +131,7 @@ class DateTimeDefinition
     }
 
     /**
-     * @param array<string, mixed> $abbreviations Values for abbreviations such as jan,feb or mon-fri.
+     * @param array<string|int, mixed> $abbreviations Values for abbreviations such as jan,feb or mon-fri.
      *
      * @return DateTimeField[]
      */
